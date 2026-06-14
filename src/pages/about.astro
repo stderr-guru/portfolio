@@ -1,0 +1,350 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const certs = [
+  { issuer: 'AWS',       name: 'AWS Certified Cloud Practitioner',  year: '2022' },
+];
+
+const stack = [
+  { category: 'Cloud',         items: ['AWS', 'GCP'] },
+  { category: 'Platform & Delivery', items: ['Terraform', 'OpenTofu', 'Docker', 'GitHub Actions'] },
+  { category: 'Systems & Network',  items: ['Linux (RHEL/Ubuntu/Alpine)', 'Tailscale', 'WireGuard', 'VMWare/Proxmox'] },
+  { category: 'Observability',  items: ['OpenTelemetry', 'SigNoz', 'CloudWatch'] },
+  { category: 'Identity & Sec', items: ['Okta', 'OIDC/SAML/SCIM', 'WAF', 'IAM', 'SOC2'] },
+  { category: 'Languages',     items: ['Python', 'Go', 'Bash/Zsh'] },
+];
+---
+
+<Layout title="About — Jordan Lowell" activeNav="about">
+  <style>
+    .about-page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3.5rem 2rem;
+    }
+
+    /* ── TOP TWO-COL ── */
+    .about-top {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 4rem;
+      margin-bottom: 5rem;
+    }
+
+    .about-heading {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2.2rem, 4vw, 3rem);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 2rem;
+    }
+
+    .about-heading em {
+      font-style: italic;
+      font-weight: 700;
+      display: block;
+    }
+
+    .about-bio {
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .about-bio p {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: #333;
+    }
+
+    .about-ctas {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.2rem;
+      font-size: var(--label-size);
+      letter-spacing: var(--label-spacing);
+      text-transform: uppercase;
+      font-weight: 600;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+
+    .cta-btn:hover { opacity: 0.7; }
+    .cta-btn.primary { background: var(--black); color: #fff; }
+    .cta-btn.secondary { border: 1px solid var(--black); color: var(--black); }
+
+    /* ── SIDEBAR ── */
+    .quick-facts {
+      border: 1px solid var(--border);
+      margin-bottom: 1rem;
+    }
+
+    .qf-header {
+      padding: 0.9rem 1.25rem;
+      font-size: var(--label-size);
+      letter-spacing: var(--label-spacing);
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
+      color: #666;
+    }
+
+    .qf-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 0.85rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      gap: 1rem;
+    }
+
+    .qf-row:last-child { border-bottom: none; }
+
+    .qf-key {
+      font-family: 'Courier New', monospace;
+      font-size: 0.75rem;
+      color: #888;
+      flex-shrink: 0;
+    }
+
+    .qf-val {
+      font-family: 'Courier New', monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-align: right;
+    }
+
+    .current-role {
+      background: var(--black);
+      color: #fff;
+      padding: 1.5rem 1.25rem;
+    }
+
+    .cr-label {
+      font-family: 'Courier New', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      color: #888;
+      margin-bottom: 0.75rem;
+    }
+
+    .cr-title {
+      font-family: 'Courier New', monospace;
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+
+    .cr-sub {
+      font-family: 'Courier New', monospace;
+      font-size: 0.75rem;
+      color: #888;
+    }
+
+    /* ── SECTION SHARED ── */
+    .section {
+      margin-bottom: 4rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .section-title.label {
+      font-family: 'Inter', sans-serif;
+      font-size: var(--label-size);
+      letter-spacing: var(--label-spacing);
+      text-transform: uppercase;
+      color: #666;
+      font-weight: 500;
+    }
+
+    .section-sub {
+      font-size: var(--label-size);
+      letter-spacing: var(--label-spacing);
+      color: #888;
+    }
+
+    .section-rule {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0 0 0.25rem;
+    }
+
+    /* ── CERTS ── */
+    .cert-list { list-style: none; }
+
+    .cert-row {
+      display: grid;
+      grid-template-columns: 6rem 1fr auto;
+      align-items: baseline;
+      gap: 1rem;
+      padding: 1.1rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cert-issuer {
+      font-size: var(--label-size);
+      letter-spacing: var(--label-spacing);
+      color: var(--purple);
+      font-weight: 600;
+    }
+
+    .cert-name {
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .cert-year {
+      font-size: var(--label-size);
+      letter-spacing: var(--label-spacing);
+      color: #888;
+    }
+
+    /* ── TECH STACK ── */
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-right: 1px solid var(--border);
+      border-bottom: none;
+    }
+
+    .stack-cell {
+      padding: 1.5rem 1.75rem;
+      border-left: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .stack-category {
+      font-size: var(--label-size);
+      letter-spacing: var(--label-spacing);
+      text-transform: uppercase;
+      color: var(--purple);
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .stack-items {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .stack-items li {
+      font-size: 0.9rem;
+      color: #333;
+    }
+
+    .stack-items li::before {
+      content: '• ';
+      color: #aaa;
+    }
+  </style>
+
+  <div class="about-page">
+
+    <!-- TOP -->
+    <div class="about-top">
+      <div>
+        <h1 class="about-heading">
+          I build infrastructure
+          <em>that ships product.</em>
+        </h1>
+
+        <div class="about-bio">
+          <p>I'm Jordan Lowell, a cloud engineer based in Berlin. I've spent the last seven years making production infrastructure boring — which is the highest compliment in this field.</p>
+          <p>My work lives at the intersection of developer experience and operational reliability. I care deeply about the feedback loop between engineers and the systems they run — if deploying a service requires a Jira ticket, something has gone wrong.</p>
+          <p>Previously at Delivery Hero (post-IPO scale), Tier Mobility (hypergrowth), and two early-stage startups where I was the first infrastructure hire. Currently open to senior IC and staff-level roles at companies who believe platform engineering is a product, not overhead.</p>
+          <p>Outside work: long-distance cycling, sourdough (yes, really), and an embarrassing amount of time on amateur radio.</p>
+        </div>
+
+        <div class="about-ctas">
+          <a href="mailto:jordanl@xternsoftware.com" class="cta-btn primary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Email Me
+          </a>
+          <a href="https://github.com" class="cta-btn secondary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            GitHub
+          </a>
+          <a href="https://linkedin.com" class="cta-btn secondary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            LinkedIn
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <div class="quick-facts">
+          <div class="qf-header">Quick Facts</div>
+          <div class="qf-row"><span class="qf-key">location</span><span class="qf-val">Berlin, Germany</span></div>
+          <div class="qf-row"><span class="qf-key">availability</span><span class="qf-val">Open to offers</span></div>
+          <div class="qf-row"><span class="qf-key">experience</span><span class="qf-val">7 years</span></div>
+          <div class="qf-row"><span class="qf-key">focus</span><span class="qf-val">Platform / IaC / K8s</span></div>
+          <div class="qf-row"><span class="qf-key">spoken</span><span class="qf-val">English, German</span></div>
+          <div class="qf-row"><span class="qf-key">preferred_stack</span><span class="qf-val">AWS + Terraform + Go</span></div>
+        </div>
+
+        <div class="current-role">
+          <div class="cr-label">&gt;_ CURRENT_ROLE</div>
+          <div class="cr-title">Staff Cloud Engineer</div>
+          <div class="cr-sub">Freelance / Open to hire</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CERTIFICATIONS -->
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title label">Certifications</h2>
+      </div>
+      <hr class="section-rule" />
+      <ul class="cert-list">
+        {certs.map(c => (
+          <li class="cert-row">
+            <span class="cert-issuer">{c.issuer}</span>
+            <span class="cert-name">{c.name}</span>
+            <span class="cert-year">{c.year}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <!-- TECH STACK -->
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">Tech Stack</h2>
+        <span class="section-sub">tools I actually use</span>
+      </div>
+      <hr class="section-rule" />
+      <div class="stack-grid">
+        {stack.map(s => (
+          <div class="stack-cell">
+            <div class="stack-category">{s.category}</div>
+            <ul class="stack-items">
+              {s.items.map(i => <li>{i}</li>)}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+
+  </div>
+</Layout>

@@ -1,0 +1,153 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const projects = (await getCollection('work'))
+  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+---
+
+<Layout title="Work — Jordan Lowell" activeNav="work">
+  <style>
+    .work-page {
+      padding: 3.5rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+    }
+
+    .section-count {
+      font-size: var(--label-size);
+      letter-spacing: var(--label-spacing);
+      color: #888;
+    }
+
+    .section-rule {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0;
+    }
+
+    .project-list { list-style: none; }
+
+    .project-item {
+      display: grid;
+      grid-template-columns: 4rem 1fr auto;
+      gap: 0 2rem;
+      padding: 2.5rem 0;
+      border-bottom: 1px solid var(--border);
+      align-items: start;
+    }
+
+    .project-year {
+      font-size: var(--label-size);
+      letter-spacing: var(--label-spacing);
+      color: #888;
+      padding-top: 0.2rem;
+    }
+
+    .project-body {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .project-category {
+      font-size: var(--label-size);
+      letter-spacing: var(--label-spacing);
+      text-transform: uppercase;
+      color: var(--purple);
+      font-weight: 600;
+    }
+
+    .project-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .project-desc {
+      font-size: 0.925rem;
+      line-height: 1.65;
+      color: #444;
+      max-width: 65ch;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.4rem;
+    }
+
+    .tag {
+      font-size: 0.7rem;
+      letter-spacing: 0.02em;
+      padding: 0.3rem 0.65rem;
+      border: 1px solid var(--border);
+      color: var(--black);
+    }
+
+    .details-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.6rem 1rem;
+      font-size: var(--label-size);
+      letter-spacing: var(--label-spacing);
+      text-transform: uppercase;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1px solid var(--black);
+      color: var(--black);
+      white-space: nowrap;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .details-btn:hover {
+      background: var(--black);
+      color: #fff;
+    }
+  </style>
+
+  <div class="work-page">
+    <div class="section-header">
+      <h2 class="section-title">Selected Projects</h2>
+      <span class="section-count">{projects.length} projects</span>
+    </div>
+    <hr class="section-rule" />
+
+    <ul class="project-list">
+      {projects.map(p => (
+        <li class="project-item">
+          <span class="project-year">{p.data.year}</span>
+
+          <div class="project-body">
+            <span class="project-category">{p.data.category}</span>
+            <h3 class="project-title">{p.data.title}</h3>
+            <p class="project-desc">{p.data.description}</p>
+            <div class="project-tags">
+              {p.data.tags.map(t => <span class="tag">{t}</span>)}
+            </div>
+          </div>
+
+          <div>
+            <a href={`/work/${p.id}`} class="details-btn">Details ↗</a>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Layout>
