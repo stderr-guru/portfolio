@@ -14,6 +14,7 @@
   "dependencies": {
     "@astrojs/svelte": "^8.1.2",
     "astro": "^6.4.6",
+    "ghostty-web": "^0.4.0",
     "svelte": "^5.56.3",
     "typescript": "^6.0.3"
   }
