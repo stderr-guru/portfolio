@@ -1,17 +1,164 @@
 ---
+import Layout from '../layouts/Layout.astro';
 
+const careerStart = 2022;
+const yearsExperience = new Date().getFullYear() - careerStart;
+
+const stats = [
+  { label: 'Years Building Platforms', value: yearsExperience, unit: 'years' },
+  { label: 'Production Services', value: '50+', unit: 'workloads' },
+  { label: 'Production Uptime', value: '99.96', unit: '%' },
+  { label: 'Identity Automation', value: '50', unit: '% faster' },
+];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="Jordan Lowell — Cloud Engineer">
+  <style>
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      height: calc(100vh - 56px - 52px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-left {
+      padding: 3.5rem 3rem 3.5rem 2rem;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .tagline {
+      font-size: var(--label-size);
+      letter-spacing: var(--label-spacing);
+      text-transform: uppercase;
+      margin-bottom: 1.75rem;
+    }
+
+    .tagline span + span::before { content: ' · '; }
+
+    h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2.8rem, 5vw, 4.2rem);
+      line-height: 1.1;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+    }
+
+    h1 .accent {
+      color: var(--purple);
+      font-style: italic;
+      font-weight: 700;
+      display: block;
+    }
+
+    .bio {
+      font-size: 1rem;
+      line-height: 1.65;
+      color: #444;
+      max-width: 38ch;
+      margin-bottom: 2.25rem;
+    }
+
+    .cta-row {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.75rem 1.4rem;
+      font-size: var(--label-size);
+      letter-spacing: var(--label-spacing);
+      text-transform: uppercase;
+      font-weight: 600;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+
+    .btn:hover { opacity: 0.75; }
+    .btn-primary { background: var(--black); color: #fff; }
+    .btn-secondary { background: transparent; color: var(--black); border: 1px solid var(--black); }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+    }
+
+    .stat-cell {
+      padding: 2rem 2.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .stat-cell:nth-child(2),
+    .stat-cell:nth-child(4) { border-right: none; }
+
+    .stat-cell:nth-child(3),
+    .stat-cell:nth-child(4) { border-bottom: none; }
+
+    .stat-label {
+      font-size: var(--label-size);
+      letter-spacing: var(--label-spacing);
+      text-transform: uppercase;
+      line-height: 1.4;
+    }
+
+    .stat-value {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2.8rem, 4vw, 3.8rem);
+      font-weight: 800;
+      line-height: 1;
+      display: flex;
+      align-items: baseline;
+      gap: 0.3rem;
+    }
+
+    .stat-unit {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #555;
+    }
+  </style>
+
+  <div class="hero-grid">
+    <section class="hero-left">
+      <p class="tagline">
+        <span>AWS & GCP</span>
+        <span>Platform Engineering</span>
+        <span>Identity & Access</span>
+      </p>
+
+      <h1>
+        Building systems
+        <span class="accent">that don't</span>
+        page at 3am.
+      </h1>
+
+      <p class="bio">AWS & GCP platform engineering for high-stakes workloads. Specializing in infrastructure automation, robust observability, and secure identity architecture that keeps systems resilient.</p>
+
+      <div class="cta-row">
+        <a href="/work" class="btn btn-primary">View Work ↗</a>
+        <a href="/writing" class="btn btn-secondary">Read Blog &gt;</a>
+      </div>
+    </section>
+
+    <div class="stats-grid">
+      {stats.map(s => (
+        <div class="stat-cell">
+          <p class="stat-label" set:html={s.label.replace('\n', '<br>')} />
+          <div class="stat-value">{s.value} <span class="stat-unit">{s.unit}</span></div>
+        </div>
+      ))}
+    </div>
+  </div>
+</Layout>
