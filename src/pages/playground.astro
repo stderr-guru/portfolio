@@ -8,7 +8,7 @@ import PlaygroundTerminal from '../components/PlaygroundTerminal.svelte';
     .playground-page {
       display: flex;
       flex-direction: column;
-      height: 100%;
+      flex: 1;
     }
 
     .playground-header {
@@ -35,8 +35,8 @@ import PlaygroundTerminal from '../components/PlaygroundTerminal.svelte';
     .terminal-wrap {
       flex: 1;
       overflow: hidden;
-      background: var(--bg);
-      min-height: 400px;
+      display: flex;
+      flex-direction: column;
     }
   </style>
 

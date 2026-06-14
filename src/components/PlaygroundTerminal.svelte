@@ -83,14 +83,15 @@
   };
 
   function getTheme() {
-    const dark = document.documentElement.getAttribute('data-theme') === 'dark';
     return {
-      background:  dark ? '#161412' : '#EDEAE2',
-      foreground:  dark ? '#EDEAE2' : '#111111',
-      cursor:      '#7747CC',
-      cursorAccent: dark ? '#161412' : '#EDEAE2',
-      black:       dark ? '#2C2925' : '#D0CCC0',
-      brightBlack: dark ? '#a09c95' : '#888888',
+      background:   '#1a1714',
+      foreground:   '#e8e4dd',
+      cursor:       '#9B71E8',
+      cursorAccent: '#1a1714',
+      black:        '#2C2925',
+      brightBlack:  '#a09c95',
+      white:        '#e8e4dd',
+      brightWhite:  '#f5f2ec',
     };
   }
 
@@ -189,15 +190,19 @@
 <style>
   .terminal-container {
     width: 100%;
-    height: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #1a1714;
   }
 
   .terminal-container :global(.xterm) {
-    height: 100%;
-    padding: 1rem;
+    flex: 1;
+    padding: 1.25rem;
   }
 
-  .terminal-container :global(.xterm-viewport) {
-    border-radius: 0;
+  .terminal-container :global(.xterm-viewport),
+  .terminal-container :global(.xterm-screen) {
+    width: 100% !important;
   }
 </style>
