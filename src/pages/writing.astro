@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 
 const posts = (await getCollection('writing'))
+  .filter(p => !p.id.startsWith('_'))
   .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 ---
 
@@ -109,6 +110,14 @@ const posts = (await getCollection('writing'))
     }
 
     .post-arrow:hover { opacity: 0.6; }
+
+    .empty-state {
+      padding: 3rem 0;
+      font-size: var(--label-size);
+      letter-spacing: var(--label-spacing);
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
   </style>
 
   <div class="writing-page">
@@ -117,6 +126,10 @@ const posts = (await getCollection('writing'))
       <span class="section-count">{posts.length} posts</span>
     </div>
     <hr class="section-rule" />
+
+    {posts.length === 0 && (
+      <p class="empty-state">Posts coming soon.</p>
+    )}
 
     <ul class="post-list">
       {posts.map(p => (
