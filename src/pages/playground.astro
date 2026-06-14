@@ -1,0 +1,52 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PlaygroundTerminal from '../components/PlaygroundTerminal.svelte';
+---
+
+<Layout title="Playground — Jordan Lowell" activeNav="playground">
+  <style>
+    .playground-page {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .playground-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding: 1rem 2rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .playground-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .playground-hint {
+      font-size: var(--label-size);
+      letter-spacing: var(--label-spacing);
+      color: var(--text-muted);
+    }
+
+    .terminal-wrap {
+      flex: 1;
+      overflow: hidden;
+      background: var(--bg);
+      min-height: 400px;
+    }
+  </style>
+
+  <div class="playground-page">
+    <div class="playground-header">
+      <span class="playground-title">Terminal</span>
+      <span class="playground-hint">type help to get started</span>
+    </div>
+    <div class="terminal-wrap">
+      <PlaygroundTerminal client:only="svelte" />
+    </div>
+  </div>
+</Layout>
