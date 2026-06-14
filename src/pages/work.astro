@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 
 const projects = (await getCollection('work'))
+  .filter(p => !p.id.startsWith('_'))
   .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
 ---
 
@@ -120,6 +121,14 @@ const projects = (await getCollection('work'))
       background: var(--black);
       color: #fff;
     }
+
+    .empty-state {
+      padding: 3rem 0;
+      font-size: var(--label-size);
+      letter-spacing: var(--label-spacing);
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
   </style>
 
   <div class="work-page">
@@ -128,6 +137,10 @@ const projects = (await getCollection('work'))
       <span class="section-count">{projects.length} projects</span>
     </div>
     <hr class="section-rule" />
+
+    {projects.length === 0 && (
+      <p class="empty-state">Case studies coming soon.</p>
+    )}
 
     <ul class="project-list">
       {projects.map(p => (
