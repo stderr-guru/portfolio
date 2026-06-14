@@ -30,7 +30,7 @@ const posts = (await getCollection('writing'))
     .section-count {
       font-size: var(--label-size);
       letter-spacing: var(--label-spacing);
-      color: #888;
+      color: var(--text-muted);
     }
 
     .section-rule {
@@ -61,7 +61,7 @@ const posts = (await getCollection('writing'))
     .post-read-time {
       font-size: var(--label-size);
       letter-spacing: 0.02em;
-      color: #888;
+      color: var(--text-muted);
     }
 
     .post-body {
@@ -94,7 +94,7 @@ const posts = (await getCollection('writing'))
     .post-excerpt {
       font-size: 0.925rem;
       line-height: 1.65;
-      color: #444;
+      color: var(--text-body);
       max-width: 65ch;
       margin-top: 0.25rem;
     }
