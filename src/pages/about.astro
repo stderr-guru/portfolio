@@ -1,6 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
+const careerStart = 2022;
+const yearsExperience = new Date().getFullYear() - careerStart;
+
 const certs = [
   { issuer: 'AWS',       name: 'AWS Certified Cloud Practitioner',  year: '2022' },
 ];
@@ -269,14 +272,14 @@ const stack = [
         </h1>
 
         <div class="about-bio">
-          <p>I'm Jordan Lowell, a cloud engineer based in Berlin. I've spent the last seven years making production infrastructure boring — which is the highest compliment in this field.</p>
-          <p>My work lives at the intersection of developer experience and operational reliability. I care deeply about the feedback loop between engineers and the systems they run — if deploying a service requires a Jira ticket, something has gone wrong.</p>
-          <p>Previously at Delivery Hero (post-IPO scale), Tier Mobility (hypergrowth), and two early-stage startups where I was the first infrastructure hire. Currently open to senior IC and staff-level roles at companies who believe platform engineering is a product, not overhead.</p>
-          <p>Outside work: long-distance cycling, sourdough (yes, really), and an embarrassing amount of time on amateur radio.</p>
+          <p>I'm Jordan Lowell, a Cloud Platform Engineer based in Greensboro, NC. I design and operate AWS and GCP infrastructure for SaaS, analytics, and AI/ML workloads — the kind of systems where downtime isn't an option.</p>
+          <p>At Xtern Software I've built and maintained 50+ production services at 99.96% uptime, architected AWS-based HPC infrastructure supporting NASA Artemis II research workloads, and consulted on SOC 2 readiness for a client's AWS environment — achieving audit readiness with zero critical findings.</p>
+          <p>I care about the full stack of platform work: identity automation with Okta and SCIM, observability with OpenTelemetry, infrastructure as code with Terraform, and the Python and Go glue that ties it all together.</p>
+          <p>AAS in Network Management from Forsyth Tech (President's List), and always looking for harder problems to solve.</p>
         </div>
 
         <div class="about-ctas">
-          <a href="mailto:jordanl@xternsoftware.com" class="cta-btn primary">
+          <a href="mailto:jordandlowell@gmail.com" class="cta-btn primary">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
             Email Me
           </a>
@@ -284,7 +287,7 @@ const stack = [
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
             GitHub
           </a>
-          <a href="https://linkedin.com" class="cta-btn secondary">
+          <a href="https://www.linkedin.com/in/jordandlowell/" class="cta-btn secondary">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
             LinkedIn
           </a>
@@ -294,18 +297,18 @@ const stack = [
       <div>
         <div class="quick-facts">
           <div class="qf-header">Quick Facts</div>
-          <div class="qf-row"><span class="qf-key">location</span><span class="qf-val">Berlin, Germany</span></div>
-          <div class="qf-row"><span class="qf-key">availability</span><span class="qf-val">Open to offers</span></div>
-          <div class="qf-row"><span class="qf-key">experience</span><span class="qf-val">7 years</span></div>
-          <div class="qf-row"><span class="qf-key">focus</span><span class="qf-val">Platform / IaC / K8s</span></div>
-          <div class="qf-row"><span class="qf-key">spoken</span><span class="qf-val">English, German</span></div>
+          <div class="qf-row"><span class="qf-key">location</span><span class="qf-val">Greensboro, NC</span></div>
+          <div class="qf-row"><span class="qf-key">availability</span><span class="qf-val">Open to opportunities</span></div>
+          <div class="qf-row"><span class="qf-key">experience</span><span class="qf-val">{yearsExperience}+ years</span></div>
+          <div class="qf-row"><span class="qf-key">focus</span><span class="qf-val">AWS / GCP / Platform</span></div>
+          <div class="qf-row"><span class="qf-key">education</span><span class="qf-val">AAS Network Mgmt</span></div>
           <div class="qf-row"><span class="qf-key">preferred_stack</span><span class="qf-val">AWS + Terraform + Go</span></div>
         </div>
 
         <div class="current-role">
           <div class="cr-label">&gt;_ CURRENT_ROLE</div>
-          <div class="cr-title">Staff Cloud Engineer</div>
-          <div class="cr-sub">Freelance / Open to hire</div>
+          <div class="cr-title">Systems Technical Lead</div>
+          <div class="cr-sub">Xtern Software / Cloud Platform Engineering</div>
         </div>
       </div>
     </div>
