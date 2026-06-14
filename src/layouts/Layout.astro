@@ -213,6 +213,7 @@ const { title = 'Jordan Lowell', activeNav } = Astro.props;
 
     .footer-a11y a:hover,
     .footer-colophon a:hover { color: var(--black); }
+
   </style>
   <slot name="head" />
 </head>
@@ -236,10 +237,39 @@ const { title = 'Jordan Lowell', activeNav } = Astro.props;
   </nav>
 
   <script is:inline>
+    const LIGHT_MODE_QUIPS = [
+  'light mode? bold choice.',
+  'hope you enjoy squinting.',
+  'my eyes. my eyes.',
+  'interesting. wrong, but interesting.',
+  'some people just want to watch the world burn.',
+  'this is not what the sun looks like either.',
+  'sponsored by your local optometrist.',
+  'ah, the crisp smell of burning retinas.',
+  'who needs coffee when you have 100% brightness?',
+  'is it legal to use this without sunglasses?',
+  'welcome to the surface of the sun.',
+  'flashbang, coming in!',
+  'I too like living life in pain.',
+  'rebel without a cause. or dark mode.',
+  'are you testing my structural integrity?',
+  'you must really love a blank canvas.',
+  'it’s like a dentist’s office, but in an app.',
+  'turning on the headlights, are we?',
+  'warning: high contrast ahead.',
+  'unlocked: flashbang mode.',
+  'blinding. literally.',
+  'light mode? why though?',
+];
     document.getElementById('theme-toggle').addEventListener('click', () => {
       const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
       document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
       localStorage.setItem('theme', isDark ? 'light' : 'dark');
+
+      if (isDark) {
+        const msg = LIGHT_MODE_QUIPS[Math.floor(Math.random() * LIGHT_MODE_QUIPS.length)];
+        console.log('%c ' + msg + ' ', 'background:#7747CC;color:#fff;padding:2px 6px;');
+      }
     });
   </script>
 
