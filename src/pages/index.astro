@@ -4,6 +4,10 @@ import Layout from '../layouts/Layout.astro';
 const careerStart = 2022;
 const yearsExperience = new Date().getFullYear() - careerStart;
 
+const url = new URL(Astro.url);
+const hostname = url.hostname;
+
+
 const stats = [
   { label: 'Years Building Platforms', value: yearsExperience, unit: 'years' },
   { label: 'Production Services', value: '50+', unit: 'workloads' },
@@ -161,4 +165,6 @@ const stats = [
       ))}
     </div>
   </div>
+
+  <p>URL: {url}</p>
 </Layout>
