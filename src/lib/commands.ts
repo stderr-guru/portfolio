@@ -155,6 +155,11 @@ export const commands: CommandRegistry = {
         ],
     },
 
+    history: {
+        description: 'show command history',
+        run: () => [],
+    },
+
     clear: {
         description: 'clear the terminal',
         run: () => null,

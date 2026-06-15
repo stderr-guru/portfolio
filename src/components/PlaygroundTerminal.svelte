@@ -67,6 +67,20 @@
       term.textarea.style.opacity = '0';
       term.textarea.style.caretColor = 'transparent';
       term.textarea.style.color = 'transparent';
+
+      container.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          if (history.length === 0) return;
+          histIdx = Math.min(histIdx + 1, history.length - 1);
+          replaceBuf(history[histIdx]);
+        } else if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          if (histIdx <= 0) { histIdx = -1; replaceBuf(''); return; }
+          histIdx--;
+          replaceBuf(history[histIdx]);
+        }
+      });
     }
 
     const writeln = (line: string) => term.write('\r\n' + line);
@@ -79,6 +93,18 @@
     function run(input: string) {
       const [name, ...args] = input.trim().split(/\s+/);
       if (!name) { term.write(PROMPT); return; }
+
+      if (name.toLowerCase() === 'history') {
+        if (history.length === 0) {
+          writeln('\x1b[2mno history\x1b[0m');
+        } else {
+          history.slice().reverse().forEach((cmd, i) =>
+            writeln(`  \x1b[2m${String(i + 1).padStart(3)}\x1b[0m  ${cmd}`)
+          );
+        }
+        term.write(PROMPT);
+        return;
+      }
 
       const cmd = commands[name.toLowerCase()];
       if (cmd) {
@@ -95,11 +121,20 @@
     }
 
     let buf = '';
+    const history: string[] = [];
+    let histIdx = -1;
+
+    function replaceBuf(next: string) {
+      if (buf.length > 0) term.write(`\x1b[${buf.length}D\x1b[K`);
+      buf = next;
+      if (buf.length > 0) term.write(buf);
+    }
 
     term.onData((data: string) => {
       switch (data) {
         case '\r':
           term.write('\r\n');
+          if (buf.trim()) { history.unshift(buf); histIdx = -1; }
           run(buf);
           buf = '';
           break;
@@ -109,6 +144,7 @@
         case '\x03':
           term.write('^C');
           buf = '';
+          histIdx = -1;
           term.write(PROMPT);
           break;
         default:
