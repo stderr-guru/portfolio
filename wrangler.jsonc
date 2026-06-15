@@ -1,8 +1,13 @@
 {
-  "name": "portfolio",
-  // Set this to today's date
-  "compatibility_date": "2026-06-12",
-  "assets": {
-    "directory": "./dist"
-  }
+    "name": "portfolio",
+    "compatibility_date": "2026-06-12",
+    "assets": {
+        "directory": "./dist"
+    },
+    "kv_namespaces": [
+        {
+            "binding": "portfolio-session",
+            "id": "33b17551ca4d47229a7225232882eff5"
+        }
+    ]
 }
