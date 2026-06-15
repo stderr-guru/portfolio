@@ -6,7 +6,7 @@
     },
     "kv_namespaces": [
         {
-            "binding": "portfolio-session",
+            "binding": "SESSION",
             "id": "33b17551ca4d47229a7225232882eff5"
         }
     ]
