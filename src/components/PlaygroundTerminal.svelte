@@ -43,6 +43,25 @@
 
     term.open(container);
 
+    const measurer = document.createElement('span');
+    measurer.style.cssText = 'position:absolute;visibility:hidden;font-family:"Courier New",Menlo,monospace;font-size:13px;white-space:pre';
+    measurer.textContent = 'X';
+    document.body.appendChild(measurer);
+    const charW = measurer.getBoundingClientRect().width;
+    const charH = measurer.getBoundingClientRect().height;
+    document.body.removeChild(measurer);
+
+    const PAD = 20; // 1.25rem padding on .xterm
+    function fit() {
+      const cols = Math.max(1, Math.floor((container.clientWidth  - PAD * 2) / charW));
+      const rows = Math.max(1, Math.floor(container.clientHeight / charH));
+      term.resize(cols, rows);
+    }
+
+    fit();
+    const ro = new ResizeObserver(fit);
+    ro.observe(container);
+
     // Hide native browser caret without touching xterm's position management
     if (term.textarea) {
       term.textarea.style.opacity = '0';
