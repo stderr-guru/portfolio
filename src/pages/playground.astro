@@ -74,6 +74,12 @@ const posts: PostEntry[] = (await getCollection('writing'))
       display: flex;
       flex-direction: column;
     }
+
+    @media (max-width: 640px) {
+      .playground-header {
+        padding: 0.75rem 1rem;
+      }
+    }
   </style>
 
   <div class="playground-page">

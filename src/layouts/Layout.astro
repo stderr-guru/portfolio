@@ -214,6 +214,65 @@ const { title = 'Jordan Lowell', activeNav } = Astro.props;
     .footer-a11y a:hover,
     .footer-colophon a:hover { color: var(--black); }
 
+    @media (max-width: 640px) {
+      nav {
+        flex-wrap: wrap;
+        height: auto;
+        padding: 0;
+      }
+
+      .logo {
+        padding: 0 1rem;
+        height: 48px;
+        flex: 1;
+      }
+
+      .theme-toggle {
+        height: 48px;
+      }
+
+      .nav-links {
+        order: 1;
+        width: 100%;
+        border-left: none;
+        border-top: 1px solid var(--border);
+        height: 40px;
+      }
+
+      .nav-links li {
+        flex: 1;
+        border-right: none;
+      }
+
+      .nav-links li:not(:last-child) {
+        border-right: 1px solid var(--border);
+      }
+
+      .nav-links a {
+        padding: 0;
+        justify-content: center;
+        font-size: 0.65rem;
+      }
+
+      .footer-main {
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem;
+        height: auto;
+        gap: 0.75rem;
+      }
+
+      .footer-icons {
+        order: -1;
+      }
+
+      .footer-meta {
+        padding: 0.6rem 1rem;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+    }
+
   </style>
   <slot name="head" />
 </head>

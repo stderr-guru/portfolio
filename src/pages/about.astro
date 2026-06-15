@@ -259,6 +259,39 @@ const stack = [
       content: '• ';
       color: #aaa;
     }
+
+    @media (max-width: 640px) {
+      .about-page {
+        padding: 2rem 1.25rem;
+      }
+
+      .about-top {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        margin-bottom: 3rem;
+      }
+
+      .stack-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .cert-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.3rem 0.75rem;
+      }
+
+      .cert-name {
+        order: -1;
+        flex: 0 0 100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .stack-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 
   <div class="about-page">
