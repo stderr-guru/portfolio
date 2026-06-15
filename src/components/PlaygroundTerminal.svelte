@@ -96,6 +96,7 @@
     display: flex;
     flex-direction: column;
     background: #1a1714;
+    caret-color: transparent;
   }
 
   .terminal-container :global(.xterm) {
