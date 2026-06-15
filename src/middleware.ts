@@ -8,7 +8,8 @@ export const onRequest = defineMiddleware(async (context, next) => {
     if (
         hostname === "ip.stderr.guru" ||
         hostname === "ipv4.stderr.guru" ||
-        hostname === "ipv6.stderr.guru"
+        hostname === "ipv6.stderr.guru" ||
+        hostname === "dev-portfolio.jordandlowell.workers.dev"
     ) {
         // Cloudflare exposes the request context via context.locals.runtime
         const cfProperties = context.locals.runtime?.cf;
