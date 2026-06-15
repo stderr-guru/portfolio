@@ -4,6 +4,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     const url = new URL(context.request.url);
     const hostname = url.hostname;
 
+    console.log(`Middleware | hostname: ${hostname}`);
     // 1. Check if the user is hitting an echo subdomain
     if (hostname === "ip.stderr.guru") {
         const clientIP =
