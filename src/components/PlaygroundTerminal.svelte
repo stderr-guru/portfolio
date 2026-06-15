@@ -68,8 +68,39 @@
       term.textarea.style.caretColor = 'transparent';
       term.textarea.style.color = 'transparent';
 
+      const allCmds = Object.keys(commands);
+
       container.addEventListener('keydown', (e: KeyboardEvent) => {
-        if (e.key === 'ArrowUp') {
+        if (e.key === 'Tab') {
+          e.preventDefault();
+          const spaceAt = buf.indexOf(' ');
+          if (spaceAt === -1) {
+            // completing command name
+            const matches = buf ? allCmds.filter(n => n.startsWith(buf)) : allCmds;
+            if (matches.length === 0) return;
+            if (matches.length === 1) { replaceBuf(matches[0] + ' '); return; }
+            term.write('\r\n' + matches.join('  '));
+            term.write(PROMPT);
+            if (buf.length > 0) term.write(buf);
+          } else {
+            // completing argument
+            const cmd = buf.slice(0, spaceAt).toLowerCase();
+            const arg = buf.slice(spaceAt + 1);
+            let pool: string[] = [];
+            if (cmd === 'ls') pool = ['projects', 'posts'];
+            else if (cmd === 'cat') pool = [
+              ...ctx.projects.map(p => p.id),
+              ...ctx.posts.map(p => p.id),
+            ];
+            if (pool.length === 0) return;
+            const matches = arg ? pool.filter(n => n.startsWith(arg)) : pool;
+            if (matches.length === 0) return;
+            if (matches.length === 1) { replaceBuf(`${cmd} ${matches[0]} `); return; }
+            term.write('\r\n' + matches.join('  '));
+            term.write(PROMPT);
+            if (buf.length > 0) term.write(buf);
+          }
+        } else if (e.key === 'ArrowUp') {
           e.preventDefault();
           if (history.length === 0) return;
           histIdx = Math.min(histIdx + 1, history.length - 1);
