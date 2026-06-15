@@ -1,13 +1,28 @@
 {
-    "name": "portfolio",
-    "compatibility_date": "2026-06-12",
-    "assets": {
-        "directory": "./dist"
+  "name": "portfolio",
+  "compatibility_date": "2026-06-12",
+  "assets": {
+    "directory": "./dist"
+  },
+  "kv_namespaces": [
+    {
+      "binding": "SESSION",
+      "id": "33b17551ca4d47229a7225232882eff5"
+    }
+  ],
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1,
+    "logs": {
+      "enabled": true,
+      "head_sampling_rate": 1,
+      "persist": true,
+      "invocation_logs": true
     },
-    "kv_namespaces": [
-        {
-            "binding": "SESSION",
-            "id": "33b17551ca4d47229a7225232882eff5"
-        }
-    ]
+    "traces": {
+      "enabled": false,
+      "persist": true,
+      "head_sampling_rate": 1
+    }
+  }
 }
