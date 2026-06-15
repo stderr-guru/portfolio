@@ -1,0 +1,108 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('writing', p => !p.id.startsWith('_'));
+  return entries.map(p => ({ params: { id: p.id }, props: { entry: p } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const { title, category, date, readTime, excerpt } = entry.data;
+---
+
+<Layout title={`${title} — Jordan Lowell`} activeNav="writing">
+  <style>
+    .post-detail {
+      padding: 3.5rem 2rem;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: var(--label-size);
+      letter-spacing: var(--label-spacing);
+      text-transform: uppercase;
+      font-weight: 600;
+      text-decoration: none;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+      transition: color 0.15s;
+    }
+    .back:hover { color: var(--black); }
+
+    .meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .category {
+      font-size: var(--label-size);
+      letter-spacing: var(--label-spacing);
+      text-transform: uppercase;
+      color: var(--purple);
+      font-weight: 600;
+    }
+
+    .byline {
+      font-size: var(--label-size);
+      letter-spacing: var(--label-spacing);
+      color: var(--text-muted);
+    }
+
+    h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 2.25rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .excerpt {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--text-body);
+      margin-bottom: 2.5rem;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin-bottom: 2.5rem;
+    }
+
+    .content :global(p)  { font-size: 0.95rem; line-height: 1.75; color: var(--text-body); margin-bottom: 1.25rem; }
+    .content :global(h2) { font-family: 'Playfair Display', Georgia, serif; font-size: 1.4rem; font-weight: 700; margin: 2rem 0 0.75rem; }
+    .content :global(h3) { font-size: 1rem; font-weight: 600; margin: 1.5rem 0 0.5rem; }
+    .content :global(ul), .content :global(ol) { padding-left: 1.5rem; margin-bottom: 1.25rem; }
+    .content :global(li) { font-size: 0.95rem; line-height: 1.75; color: var(--text-body); margin-bottom: 0.25rem; }
+    .content :global(code) { font-family: 'Courier New', monospace; font-size: 0.85em; background: var(--border); padding: 0.15em 0.4em; }
+    .content :global(pre) { background: var(--border); padding: 1rem; overflow-x: auto; margin-bottom: 1.25rem; }
+    .content :global(pre code) { background: none; padding: 0; }
+    .content :global(blockquote) { border-left: 3px solid var(--purple); padding-left: 1rem; margin: 1.5rem 0; color: var(--text-muted); font-style: italic; }
+  </style>
+
+  <div class="post-detail">
+    <a href="/writing" class="back">← Writing</a>
+
+    <div class="meta">
+      <span class="category">{category}</span>
+      <span class="byline">{date} · {readTime}</span>
+    </div>
+
+    <h1>{title}</h1>
+    <p class="excerpt">{excerpt}</p>
+
+    <hr />
+
+    <div class="content">
+      <Content />
+    </div>
+  </div>
+</Layout>
