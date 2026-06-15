@@ -6,7 +6,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
     console.log(`Middleware | hostname: ${hostname}`);
     // 1. Check if the user is hitting an echo subdomain
-    if (hostname === "https://ip.stderr.guru") {
+    if (hostname === "https://ip.stderr.guru/") {
         const clientIP =
             context.request.headers.get("CF-Connecting-IP") || "Unknown IP";
         const ipType = clientIP.includes(":") ? "IPv6" : "IPv4";
