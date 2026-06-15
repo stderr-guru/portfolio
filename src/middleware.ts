@@ -5,16 +5,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     const hostname = url.hostname;
 
     // 1. Check if the user is hitting an echo subdomain
-    if (
-        hostname === "ip.stderr.guru" ||
-        hostname === "ipv4.stderr.guru" ||
-        hostname === "ipv6.stderr.guru" ||
-        hostname === "dev-portfolio.jordandlowell.workers.dev"
-    ) {
-        // Cloudflare exposes the request context via context.locals.runtime
-        const cfProperties = context.locals.runtime?.cf;
-
-        // Fall back to the standard header if needed
+    if (hostname === "ip.stderr.guru") {
         const clientIP =
             context.request.headers.get("CF-Connecting-IP") || "Unknown IP";
         const ipType = clientIP.includes(":") ? "IPv6" : "IPv4";
