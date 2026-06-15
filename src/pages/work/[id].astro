@@ -1,0 +1,126 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('work', p => !p.id.startsWith('_'));
+  return entries.map(p => ({ params: { id: p.id }, props: { entry: p } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const { title, category, year, tags, description } = entry.data;
+---
+
+<Layout title={`${title} — Jordan Lowell`} activeNav="work">
+  <style>
+    .work-detail {
+      padding: 3.5rem 2rem;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: var(--label-size);
+      letter-spacing: var(--label-spacing);
+      text-transform: uppercase;
+      font-weight: 600;
+      text-decoration: none;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+      transition: color 0.15s;
+    }
+    .back:hover { color: var(--black); }
+
+    .meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .category {
+      font-size: var(--label-size);
+      letter-spacing: var(--label-spacing);
+      text-transform: uppercase;
+      color: var(--purple);
+      font-weight: 600;
+    }
+
+    .year {
+      font-size: var(--label-size);
+      letter-spacing: var(--label-spacing);
+      color: var(--text-muted);
+    }
+
+    h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 2.25rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .description {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--text-body);
+      margin-bottom: 1.5rem;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .tag {
+      font-size: 0.7rem;
+      letter-spacing: 0.02em;
+      padding: 0.3rem 0.65rem;
+      border: 1px solid var(--border);
+      color: var(--black);
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin-bottom: 2.5rem;
+    }
+
+    .content :global(p)  { font-size: 0.95rem; line-height: 1.75; color: var(--text-body); margin-bottom: 1.25rem; }
+    .content :global(h2) { font-family: 'Playfair Display', Georgia, serif; font-size: 1.4rem; font-weight: 700; margin: 2rem 0 0.75rem; }
+    .content :global(h3) { font-size: 1rem; font-weight: 600; margin: 1.5rem 0 0.5rem; }
+    .content :global(ul), .content :global(ol) { padding-left: 1.5rem; margin-bottom: 1.25rem; }
+    .content :global(li) { font-size: 0.95rem; line-height: 1.75; color: var(--text-body); margin-bottom: 0.25rem; }
+    .content :global(code) { font-family: 'Courier New', monospace; font-size: 0.85em; background: var(--border); padding: 0.15em 0.4em; }
+    .content :global(pre) { background: var(--border); padding: 1rem; overflow-x: auto; margin-bottom: 1.25rem; }
+    .content :global(pre code) { background: none; padding: 0; }
+  </style>
+
+  <div class="work-detail">
+    <a href="/work" class="back">← Work</a>
+
+    <div class="meta">
+      <span class="category">{category}</span>
+      <span class="year">{year}</span>
+    </div>
+
+    <h1>{title}</h1>
+    <p class="description">{description}</p>
+
+    <div class="tags">
+      {tags.map(t => <span class="tag">{t}</span>)}
+    </div>
+
+    <hr />
+
+    <div class="content">
+      <Content />
+    </div>
+  </div>
+</Layout>
