@@ -1,6 +1,10 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { commands } from '../lib/commands';
+  import type { ProjectEntry, PostEntry } from '../lib/commands';
+
+  export let projects: ProjectEntry[] = [];
+  export let posts: PostEntry[] = [];
 
   let container;
 
@@ -39,7 +43,15 @@
 
     term.open(container);
 
+    // Hide native browser caret without touching xterm's position management
+    if (term.textarea) {
+      term.textarea.style.opacity = '0';
+      term.textarea.style.caretColor = 'transparent';
+      term.textarea.style.color = 'transparent';
+    }
+
     const writeln = (line: string) => term.write('\r\n' + line);
+    const ctx = { projects, posts };
 
     term.write('\x1b[38;5;141m\x1b[1mJordan Lowell — Playground\x1b[0m');
     term.write(`\r\nType \x1b[1mhelp\x1b[0m to see available commands.`);
@@ -51,7 +63,7 @@
 
       const cmd = commands[name.toLowerCase()];
       if (cmd) {
-        const output = cmd.run(args);
+        const output = cmd.run(args, ctx);
         if (output === null) {
           term.clear();
         } else {
@@ -96,6 +108,9 @@
     display: flex;
     flex-direction: column;
     background: #1a1714;
+    position: relative;
+    overflow: hidden;
+    caret-color: transparent;
   }
 
   .terminal-container :global(.xterm) {
