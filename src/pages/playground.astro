@@ -1,6 +1,34 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import PlaygroundTerminal from '../components/PlaygroundTerminal.svelte';
+import { getCollection } from 'astro:content';
+import type { ProjectEntry, PostEntry } from '../lib/commands';
+
+const projects: ProjectEntry[] = (await getCollection('work'))
+  .filter(p => !p.id.startsWith('_'))
+  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99))
+  .map(p => ({
+    id: p.id,
+    title: p.data.title,
+    category: p.data.category,
+    year: p.data.year,
+    description: p.data.description,
+    tags: p.data.tags,
+    body: p.body ?? '',
+  }));
+
+const posts: PostEntry[] = (await getCollection('writing'))
+  .filter(p => !p.id.startsWith('_'))
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+  .map(p => ({
+    id: p.id,
+    title: p.data.title,
+    category: p.data.category,
+    date: p.data.date,
+    readTime: p.data.readTime,
+    excerpt: p.data.excerpt,
+    body: p.body ?? '',
+  }));
 ---
 
 <Layout title="Playground — Jordan Lowell" activeNav="playground">
@@ -46,7 +74,7 @@ import PlaygroundTerminal from '../components/PlaygroundTerminal.svelte';
       <span class="playground-hint">type help to get started</span>
     </div>
     <div class="terminal-wrap">
-        <PlaygroundTerminal client:only="svelte" />
+      <PlaygroundTerminal client:only="svelte" projects={projects} posts={posts} />
     </div>
   </div>
 </Layout>
