@@ -62,7 +62,15 @@ const posts: PostEntry[] = (await getCollection('writing'))
 
     .terminal-wrap {
       flex: 1;
+      min-height: 0;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .terminal-wrap :global(astro-island) {
+      flex: 1;
+      min-height: 0;
       display: flex;
       flex-direction: column;
     }

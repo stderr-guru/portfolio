@@ -43,11 +43,75 @@
 
     term.open(container);
 
+    const measurer = document.createElement('span');
+    measurer.style.cssText = 'position:absolute;visibility:hidden;font-family:"Courier New",Menlo,monospace;font-size:13px;white-space:pre';
+    measurer.textContent = 'X';
+    document.body.appendChild(measurer);
+    const charW = measurer.getBoundingClientRect().width;
+    const charH = measurer.getBoundingClientRect().height;
+    document.body.removeChild(measurer);
+
+    const PAD = 20; // 1.25rem padding on .xterm
+    function fit() {
+      const cols = Math.max(1, Math.floor((container.clientWidth  - PAD * 2) / charW));
+      const rows = Math.max(1, Math.floor(container.clientHeight / charH));
+      term.resize(cols, rows);
+    }
+
+    fit();
+    const ro = new ResizeObserver(fit);
+    ro.observe(container);
+
     // Hide native browser caret without touching xterm's position management
     if (term.textarea) {
       term.textarea.style.opacity = '0';
       term.textarea.style.caretColor = 'transparent';
       term.textarea.style.color = 'transparent';
+
+      const allCmds = Object.keys(commands);
+
+      container.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'Tab') {
+          e.preventDefault();
+          const spaceAt = buf.indexOf(' ');
+          if (spaceAt === -1) {
+            // completing command name
+            const matches = buf ? allCmds.filter(n => n.startsWith(buf)) : allCmds;
+            if (matches.length === 0) return;
+            if (matches.length === 1) { replaceBuf(matches[0] + ' '); return; }
+            term.write('\r\n' + matches.join('  '));
+            term.write(PROMPT);
+            if (buf.length > 0) term.write(buf);
+          } else {
+            // completing argument
+            const cmd = buf.slice(0, spaceAt).toLowerCase();
+            const arg = buf.slice(spaceAt + 1);
+            let pool: string[] = [];
+            if (cmd === 'ls') pool = ['projects', 'posts'];
+            else if (cmd === 'cat') pool = [
+              ...ctx.projects.map(p => p.id),
+              ...ctx.posts.map(p => p.id),
+            ];
+            if (pool.length === 0) return;
+            const matches = arg ? pool.filter(n => n.startsWith(arg)) : pool;
+            if (matches.length === 0) return;
+            if (matches.length === 1) { replaceBuf(`${cmd} ${matches[0]} `); return; }
+            term.write('\r\n' + matches.join('  '));
+            term.write(PROMPT);
+            if (buf.length > 0) term.write(buf);
+          }
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          if (history.length === 0) return;
+          histIdx = Math.min(histIdx + 1, history.length - 1);
+          replaceBuf(history[histIdx]);
+        } else if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          if (histIdx <= 0) { histIdx = -1; replaceBuf(''); return; }
+          histIdx--;
+          replaceBuf(history[histIdx]);
+        }
+      });
     }
 
     const writeln = (line: string) => term.write('\r\n' + line);
@@ -60,6 +124,18 @@
     function run(input: string) {
       const [name, ...args] = input.trim().split(/\s+/);
       if (!name) { term.write(PROMPT); return; }
+
+      if (name.toLowerCase() === 'history') {
+        if (history.length === 0) {
+          writeln('\x1b[2mno history\x1b[0m');
+        } else {
+          history.slice().reverse().forEach((cmd, i) =>
+            writeln(`  \x1b[2m${String(i + 1).padStart(3)}\x1b[0m  ${cmd}`)
+          );
+        }
+        term.write(PROMPT);
+        return;
+      }
 
       const cmd = commands[name.toLowerCase()];
       if (cmd) {
@@ -76,11 +152,20 @@
     }
 
     let buf = '';
+    const history: string[] = [];
+    let histIdx = -1;
+
+    function replaceBuf(next: string) {
+      if (buf.length > 0) term.write(`\x1b[${buf.length}D\x1b[K`);
+      buf = next;
+      if (buf.length > 0) term.write(buf);
+    }
 
     term.onData((data: string) => {
       switch (data) {
         case '\r':
           term.write('\r\n');
+          if (buf.trim()) { history.unshift(buf); histIdx = -1; }
           run(buf);
           buf = '';
           break;
@@ -90,6 +175,7 @@
         case '\x03':
           term.write('^C');
           buf = '';
+          histIdx = -1;
           term.write(PROMPT);
           break;
         default:
